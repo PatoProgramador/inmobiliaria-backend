@@ -10,6 +10,9 @@ import co.edu.inmobiliaria.backendverkev.repositorios.PersonaRepository;
 import co.edu.inmobiliaria.backendverkev.repositorios.SucursalRepository;
 import co.edu.inmobiliaria.backendverkev.repositorios.TipoIdentificacionRepository;
 import co.edu.inmobiliaria.backendverkev.repositorios.TipoPersonaRepository;
+import co.edu.inmobiliaria.backendverkev.servicios.sucursal.SucursalServiceImp;
+import co.edu.inmobiliaria.backendverkev.servicios.tipoIdentificacion.TipoIdentificacionServiceImp;
+import co.edu.inmobiliaria.backendverkev.servicios.tipoPersona.TipoPersonaServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +26,13 @@ public class PersonaServiceImp implements PersonaService {
     private PersonaRepository personaRepository;
 
     @Autowired
-    private TipoPersonaRepository tipoPersonaRepository;
+    private TipoPersonaServiceImp tipoPersonaServiceImp;
 
     @Autowired
-    private TipoIdentificacionRepository tipoIdentificacionRepository;
+    private TipoIdentificacionServiceImp tipoIdentificacionServiceImp;
 
     @Autowired
-    private SucursalRepository sucursalRepository;
+    private SucursalServiceImp sucursalServiceImp;
 
     @Override
     public List<PersonaDTO> listar() {
@@ -42,26 +45,24 @@ public class PersonaServiceImp implements PersonaService {
     public Persona crearPersona(Long idTipoPersona, Long idTipoIdentificacion, Long idSucursal, PersonaInputDTO personaInputDTO) {
         Persona persona = new Persona();
 
-        Optional<TipoPersona> tipoPersona = tipoPersonaRepository.findById(idTipoPersona);
+        Optional<TipoPersona> tipoPersona = tipoPersonaServiceImp.encontrarPorId(idTipoPersona);
 
-        Optional<TipoIdentificacion> tipoIdentificacion = tipoIdentificacionRepository.findById(idTipoIdentificacion);
+        Optional<TipoIdentificacion> tipoIdentificacion = tipoIdentificacionServiceImp.encontrarPorId(idTipoIdentificacion);
 
-        Optional<Sucursal> sucursal = sucursalRepository.findById(idSucursal);
+        Optional<Sucursal> sucursal = sucursalServiceImp.encontrarPorId(idSucursal);
 
         // creacion de la instancia
         persona.setIdentificacion(personaInputDTO.getIdentificacion());
         persona.setNombre(personaInputDTO.getNombre());
         persona.setCorreo(personaInputDTO.getCorreo());
         persona.setTelefono(personaInputDTO.getTelefono());
-
+        // relaciones...
         tipoPersona.ifPresent(persona::setTipoPersona);
         tipoIdentificacion.ifPresent(persona::setTipoIdentificacion);
         sucursal.ifPresent(persona::setSucursal);
-
-        System.out.println(persona);
-
+        // guardamos la nueva instancia
         personaRepository.save(persona);
-
+        // mostramos la isntancia que se creó
         return persona;
     }
 }

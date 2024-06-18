@@ -1,5 +1,6 @@
 package co.edu.inmobiliaria.backendverkev.servicios.sucursal;
 
+import co.edu.inmobiliaria.backendverkev.dominio.Sucursal;
 import co.edu.inmobiliaria.backendverkev.dtos.SucursalDTO;
 import co.edu.inmobiliaria.backendverkev.repositorios.SucursalRepository;
 import co.edu.inmobiliaria.backendverkev.servicios.sucursal.SucursalService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +23,11 @@ public class SucursalServiceImp  implements SucursalService {
                 .collect(Collectors.toList());
 
         return sucursalList;
+    }
+
+    @Override
+    public Optional<Sucursal> encontrarPorId(Long id) {
+        return sucursalRepository.findById(id);
     }
 }
 

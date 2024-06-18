@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TipoPersonaServiceImp implements TipoPersonaService{
@@ -15,5 +16,12 @@ public class TipoPersonaServiceImp implements TipoPersonaService{
     @Override
     public List<TipoPersona> listar() {
         return tipoPersonaRepository.findAll();
+    }
+
+    @Override
+    public Optional<TipoPersona> encontrarPorId(Long id) {
+        Optional<TipoPersona> dbTipoPersona = tipoPersonaRepository.findById(id);
+
+        return dbTipoPersona;
     }
 }

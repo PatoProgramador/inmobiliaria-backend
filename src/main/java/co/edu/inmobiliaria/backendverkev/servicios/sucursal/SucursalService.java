@@ -5,7 +5,9 @@ import co.edu.inmobiliaria.backendverkev.dominio.Sucursal;
 import co.edu.inmobiliaria.backendverkev.dtos.SucursalDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SucursalService {
     List<SucursalDTO> listar();
+    Optional<Sucursal> encontrarPorId(Long id);
 }
