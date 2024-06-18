@@ -11,4 +11,5 @@ public interface PersonaService {
     List<PersonaDTO> listar();
 
     PersonaDTO crearPersona(Long idTipoPersona, Long idTipoIdentificacion, Long idSucursal, PersonaInputDTO personaInputDTO);
+    PersonaDTO modificarPersona(Long idPersona, Long idTipoPersona, Long idTipoIdentificacion, Long idSucursal, PersonaInputDTO personaInputDTO);
 }

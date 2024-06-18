@@ -24,4 +24,9 @@ public class PersonaControlador {
     public PersonaDTO crear(@PathVariable Long idTipoPersona, @PathVariable Long idTipoIdentificacion, @PathVariable Long idSucursal, @RequestBody PersonaInputDTO personaInputDTO) {
         return personaServiceImp.crearPersona(idTipoPersona, idTipoIdentificacion, idSucursal, personaInputDTO);
     }
+
+    @PutMapping("/modificarPersona/{idPersona}/tipoPersona/{idTipoPersona}/tipoIdentificacion/{idTipoIdentificacion}/sucursal/{idSucursal}")
+    public PersonaDTO modificar(@PathVariable Long idPersona,@PathVariable Long idTipoPersona, @PathVariable Long idTipoIdentificacion, @PathVariable Long idSucursal, @RequestBody PersonaInputDTO personaInputDTO) {
+        return personaServiceImp.modificarPersona(idPersona, idTipoPersona, idTipoIdentificacion, idSucursal, personaInputDTO);
+    }
 }

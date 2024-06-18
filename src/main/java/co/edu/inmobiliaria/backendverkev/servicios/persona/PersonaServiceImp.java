@@ -13,6 +13,7 @@ import co.edu.inmobiliaria.backendverkev.repositorios.TipoPersonaRepository;
 import co.edu.inmobiliaria.backendverkev.servicios.sucursal.SucursalServiceImp;
 import co.edu.inmobiliaria.backendverkev.servicios.tipoIdentificacion.TipoIdentificacionServiceImp;
 import co.edu.inmobiliaria.backendverkev.servicios.tipoPersona.TipoPersonaServiceImp;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,5 +65,72 @@ public class PersonaServiceImp implements PersonaService {
         personaRepository.save(persona);
         // pulimos la instancia para devolverla..
         return new PersonaDTO(persona);
+    }
+
+    @Override
+    public PersonaDTO modificarPersona(Long idPersona, Long idTipoPersona, Long idTipoIdentificacion, Long idSucursal, PersonaInputDTO personaInputDTO) {
+        Optional<Persona> persona = personaRepository.findById(idPersona);
+        if (persona.isPresent()) {
+            Persona dbPer = persona.get();
+            // si es distinto de 0 es porque quiere ser modificado
+            if (idTipoPersona != 0) {
+                // manejo de tipo de persona
+                Optional<TipoPersona> tipoPersona = tipoPersonaServiceImp.encontrarPorId(idTipoPersona);
+                // manejo de error optional
+                if (tipoPersona.isPresent()) {
+                    // setear la db persona
+                    dbPer.setTipoPersona(tipoPersona.get());
+                } else {
+                    throw new EntityNotFoundException("No se encontró el tipo de persona con id " + idTipoPersona);
+                }
+            }
+            // si es distinto de 0 se quiere modificar el tipo de identificacion
+            if (idTipoIdentificacion != 0) {
+                Optional<TipoIdentificacion> tipoIdentificacion = tipoIdentificacionServiceImp.encontrarPorId(idTipoIdentificacion);
+
+                if (tipoIdentificacion.isPresent()) {
+                    // setear la db persona
+                    dbPer.setTipoIdentificacion(tipoIdentificacion.get());
+                } else {
+                    throw new EntityNotFoundException("No se encontró el tipo de identificacion con id " + idTipoIdentificacion);
+                }
+            }
+
+            if (idSucursal != 0) {
+                Optional<Sucursal> sucursal = sucursalServiceImp.encontrarPorId(idSucursal);
+
+                if (sucursal.isPresent()) {
+                    // setear la db persona
+                    dbPer.setSucursal(sucursal.get());
+                } else {
+                    throw new EntityNotFoundException("No se encontró la sucursal con id " + idSucursal);
+                }
+            }
+            // si la identificacion no viene vacia se setea en la instancia de la db
+            if (personaInputDTO.getIdentificacion() != null && personaInputDTO.getIdentificacion() != "") {
+                dbPer.setIdentificacion(personaInputDTO.getIdentificacion());
+            }
+            // si el nombre no viene vacio se setea en la instancia de la db
+            if (personaInputDTO.getNombre() != null && personaInputDTO.getNombre() != "") {
+                dbPer.setNombre(personaInputDTO.getNombre());
+            }
+            // etc etc
+            if (personaInputDTO.getCorreo() != null && personaInputDTO.getCorreo() != "") {
+                dbPer.setCorreo(personaInputDTO.getCorreo());
+            }
+            // etc etc x2
+            if (personaInputDTO.getTelefono() != null && personaInputDTO.getTelefono() != "") {
+                dbPer.setTelefono(personaInputDTO.getTelefono());
+            }
+            // guardamos las modificaciones
+            personaRepository.save(dbPer);
+            // instancia de DTO para retornar la persona modificada
+            PersonaDTO personaDTO = new PersonaDTO(dbPer);
+
+            return personaDTO;
+        } else {
+            // Manejar el caso donde la persona no existe
+            throw new EntityNotFoundException("No se encontró la persona con id " + idPersona);
+        }
     }
 }

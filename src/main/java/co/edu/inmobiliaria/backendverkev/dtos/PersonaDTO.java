@@ -5,6 +5,7 @@ import co.edu.inmobiliaria.backendverkev.dominio.Persona;
 public class PersonaDTO {
     private int id;
     private String nombre;
+    private String identificacion;
     private String telefono;
     private String correo;
     private String tipoPersona;
@@ -23,6 +24,7 @@ public class PersonaDTO {
         }
         this.tipoIdentificacion = persona.getTipoIdentificacion().getDescripcion();
         this.sucursal = persona.getSucursal().getNombre();
+        this.identificacion = persona.getIdentificacion();
     }
 
     public int getId() {
@@ -71,6 +73,14 @@ public class PersonaDTO {
 
     public void setTipoIdentificacion(String tipoIdentificacion) {
         this.tipoIdentificacion = tipoIdentificacion;
+    }
+
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
     }
 
     public String getSucursal() {
