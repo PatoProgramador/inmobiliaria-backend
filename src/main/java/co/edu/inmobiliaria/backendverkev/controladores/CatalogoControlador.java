@@ -6,6 +6,8 @@ import co.edu.inmobiliaria.backendverkev.dtos.TipoIdentificacionDTO;
 import co.edu.inmobiliaria.backendverkev.repositorios.TipoPersonaRepository;
 import co.edu.inmobiliaria.backendverkev.servicios.ciudad.CiudadServiceImp;
 import co.edu.inmobiliaria.backendverkev.servicios.tipoIdentificacion.TipoIdentificacionServiceImp;
+import co.edu.inmobiliaria.backendverkev.servicios.tipoPersona.TipoPersonaService;
+import co.edu.inmobiliaria.backendverkev.servicios.tipoPersona.TipoPersonaServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,9 @@ public class CatalogoControlador {
     @Autowired
     private TipoIdentificacionServiceImp tipoIdentificacionServiceImp;
 
+    @Autowired
+    private TipoPersonaServiceImp tipoPersonaServiceImp;
+
     @GetMapping("/ciudad/listar")
     public List<CiudadDTO> listarCiudades() {
         return ciudadServiceImp.listar();
@@ -31,5 +36,8 @@ public class CatalogoControlador {
     public List<TipoIdentificacionDTO> listarTiposIdentificacion() {
         return tipoIdentificacionServiceImp.listar();
     }
+
+    @GetMapping("/tipoPersona/listar")
+    public List<TipoPersona> listarTiposPersona() { return tipoPersonaServiceImp.listar();}
 
 }
