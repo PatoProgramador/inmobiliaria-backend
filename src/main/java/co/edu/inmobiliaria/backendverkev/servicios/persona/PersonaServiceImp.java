@@ -14,6 +14,7 @@ import co.edu.inmobiliaria.backendverkev.servicios.sucursal.SucursalServiceImp;
 import co.edu.inmobiliaria.backendverkev.servicios.tipoIdentificacion.TipoIdentificacionServiceImp;
 import co.edu.inmobiliaria.backendverkev.servicios.tipoPersona.TipoPersonaServiceImp;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,12 +44,12 @@ public class PersonaServiceImp implements PersonaService {
     }
 
     @Override
-    public PersonaDTO traerPorId(Long id) {
-        Optional<Persona> personaDTO = personaRepository.findById(id);
+    public PersonaDTO traerPorId(Long idPersona) {
+        Optional<Persona> personaDTO = personaRepository.findById(idPersona);
         if (personaDTO.isPresent()) {
             return new PersonaDTO(personaDTO.get());
         } else {
-            throw new EntityNotFoundException("No se encontró la persona con id " + id);
+            throw new EntityNotFoundException("No se encontró la persona con id " + idPersona);
         }
     }
 
@@ -140,6 +141,20 @@ public class PersonaServiceImp implements PersonaService {
             return personaDTO;
         } else {
             // Manejar el caso donde la persona no existe
+            throw new EntityNotFoundException("No se encontró la persona con id " + idPersona);
+        }
+    }
+
+    @Override
+    public PersonaDTO eliminarPersona(Long idPersona) {
+        Optional<Persona> dbPersona = personaRepository.findById(idPersona);
+
+        if (dbPersona.isPresent()) {
+            Persona persona = dbPersona.get();
+            personaRepository.borrarPersona(idPersona);
+
+            return  new PersonaDTO(persona);
+        } else {
             throw new EntityNotFoundException("No se encontró la persona con id " + idPersona);
         }
     }

@@ -34,4 +34,9 @@ public class PersonaControlador {
     public PersonaDTO modificar(@PathVariable Long idPersona,@PathVariable Long idTipoPersona, @PathVariable Long idTipoIdentificacion, @PathVariable Long idSucursal, @RequestBody PersonaInputDTO personaInputDTO) {
         return personaServiceImp.modificarPersona(idPersona, idTipoPersona, idTipoIdentificacion, idSucursal, personaInputDTO);
     }
+
+    @DeleteMapping("/borrar/{idPersona}")
+    public PersonaDTO eliminar(@PathVariable Long idPersona) {
+        return personaServiceImp.eliminarPersona(idPersona);
+    }
 }

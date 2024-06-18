@@ -10,8 +10,9 @@ import java.util.Optional;
 public interface PersonaService {
 
     List<PersonaDTO> listar();
-    PersonaDTO traerPorId(Long id);
+    PersonaDTO traerPorId(Long idPersona);
 
     PersonaDTO crearPersona(Long idTipoPersona, Long idTipoIdentificacion, Long idSucursal, PersonaInputDTO personaInputDTO);
     PersonaDTO modificarPersona(Long idPersona, Long idTipoPersona, Long idTipoIdentificacion, Long idSucursal, PersonaInputDTO personaInputDTO);
+    PersonaDTO eliminarPersona(Long idPersona);
 }
