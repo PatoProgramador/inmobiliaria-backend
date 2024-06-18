@@ -42,7 +42,7 @@ public class PersonaServiceImp implements PersonaService {
     }
 
     @Override
-    public Persona crearPersona(Long idTipoPersona, Long idTipoIdentificacion, Long idSucursal, PersonaInputDTO personaInputDTO) {
+    public PersonaDTO crearPersona(Long idTipoPersona, Long idTipoIdentificacion, Long idSucursal, PersonaInputDTO personaInputDTO) {
         Persona persona = new Persona();
 
         Optional<TipoPersona> tipoPersona = tipoPersonaServiceImp.encontrarPorId(idTipoPersona);
@@ -62,7 +62,7 @@ public class PersonaServiceImp implements PersonaService {
         sucursal.ifPresent(persona::setSucursal);
         // guardamos la nueva instancia
         personaRepository.save(persona);
-        // mostramos la isntancia que se creó
-        return persona;
+        // pulimos la instancia para devolverla..
+        return new PersonaDTO(persona);
     }
 }

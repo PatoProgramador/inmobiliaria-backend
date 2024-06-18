@@ -21,7 +21,7 @@ public class PersonaControlador {
     }
 
     @PostMapping("/crearPersona/tipoPersona/{idTipoPersona}/tipoIdentificacion/{idTipoIdentificacion}/sucursal/{idSucursal}")
-    public Persona crear(@PathVariable Long idTipoPersona, @PathVariable Long idTipoIdentificacion, @PathVariable Long idSucursal, @RequestBody PersonaInputDTO personaInputDTO) {
+    public PersonaDTO crear(@PathVariable Long idTipoPersona, @PathVariable Long idTipoIdentificacion, @PathVariable Long idSucursal, @RequestBody PersonaInputDTO personaInputDTO) {
         return personaServiceImp.crearPersona(idTipoPersona, idTipoIdentificacion, idSucursal, personaInputDTO);
     }
 }
