@@ -20,6 +20,11 @@ public class PersonaControlador {
         return personaServiceImp.listar();
     }
 
+    @GetMapping("/{idPersona}")
+    public PersonaDTO traerPersonaPorId(@PathVariable Long idPersona) {
+        return personaServiceImp.traerPorId(idPersona);
+    }
+
     @PostMapping("/crearPersona/tipoPersona/{idTipoPersona}/tipoIdentificacion/{idTipoIdentificacion}/sucursal/{idSucursal}")
     public PersonaDTO crear(@PathVariable Long idTipoPersona, @PathVariable Long idTipoIdentificacion, @PathVariable Long idSucursal, @RequestBody PersonaInputDTO personaInputDTO) {
         return personaServiceImp.crearPersona(idTipoPersona, idTipoIdentificacion, idSucursal, personaInputDTO);

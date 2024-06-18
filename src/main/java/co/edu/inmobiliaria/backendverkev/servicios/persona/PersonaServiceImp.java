@@ -43,6 +43,16 @@ public class PersonaServiceImp implements PersonaService {
     }
 
     @Override
+    public PersonaDTO traerPorId(Long id) {
+        Optional<Persona> personaDTO = personaRepository.findById(id);
+        if (personaDTO.isPresent()) {
+            return new PersonaDTO(personaDTO.get());
+        } else {
+            throw new EntityNotFoundException("No se encontró la persona con id " + id);
+        }
+    }
+
+    @Override
     public PersonaDTO crearPersona(Long idTipoPersona, Long idTipoIdentificacion, Long idSucursal, PersonaInputDTO personaInputDTO) {
         Persona persona = new Persona();
 
