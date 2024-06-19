@@ -1,8 +1,6 @@
 package co.edu.inmobiliaria.backendverkev.dtos;
 
 import co.edu.inmobiliaria.backendverkev.dominio.Inmueble;
-import co.edu.inmobiliaria.backendverkev.dominio.Persona;
-import co.edu.inmobiliaria.backendverkev.inputdtos.InmubleInputDTO;
 
 public class InmuebleDTO {
     private int id;
@@ -10,6 +8,7 @@ public class InmuebleDTO {
     private String direccion;
     private Boolean disponible;
     private String propietario;
+    private Double precio;
 
     public InmuebleDTO(Inmueble inmueble) {
         this.id = inmueble.getId();
@@ -17,6 +16,11 @@ public class InmuebleDTO {
         this.direccion = inmueble.getDireccion();
         this.disponible = inmueble.getDisponible();
         this.propietario = inmueble.getPersona().getNombre();
+        if (inmueble.getAvaluoList().size() > 0) {
+            // asignamos el ultimo avaluo
+            int lastItemIndex = inmueble.getAvaluoList().size() - 1;
+            this.precio = inmueble.getAvaluoList().get(lastItemIndex).getPrecio();
+        }
     }
 
     public int getId() {
@@ -57,5 +61,13 @@ public class InmuebleDTO {
 
     public void setPropietario(String propietario) {
         this.propietario = propietario;
+    }
+
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
     }
 }
