@@ -22,6 +22,10 @@ public class InmuebleControlador {
         return inmuebleServiceImp.listar();
     }
 
+    @GetMapping("/{idInmueble}")
+    public InmuebleDTO obtenerPorId(@PathVariable Long idInmueble) {
+        return inmuebleServiceImp.encontrarPorIdInmuebleDTO(idInmueble);
+    }
     @PostMapping("/crearInmueble/persona/{idPersona}")
     public InmuebleDTO crearInmueble(@PathVariable Long idPersona, @RequestBody InmubleInputDTO inmubleInputDTO) {
         return inmuebleServiceImp.crearInmueble(idPersona, inmubleInputDTO);
