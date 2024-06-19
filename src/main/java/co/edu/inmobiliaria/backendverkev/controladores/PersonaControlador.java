@@ -15,14 +15,14 @@ public class PersonaControlador {
     @Autowired
     private PersonaServiceImp personaServiceImp;
 
-    @GetMapping("/getAll")
+    @GetMapping("/listar")
     public List<PersonaDTO> getAll() {
         return personaServiceImp.listar();
     }
 
     @GetMapping("/{idPersona}")
     public PersonaDTO traerPersonaPorId(@PathVariable Long idPersona) {
-        return personaServiceImp.traerPorId(idPersona);
+        return personaServiceImp.traerPorIdDTO(idPersona);
     }
 
     @PostMapping("/crearPersona/tipoPersona/{idTipoPersona}/tipoIdentificacion/{idTipoIdentificacion}/sucursal/{idSucursal}")

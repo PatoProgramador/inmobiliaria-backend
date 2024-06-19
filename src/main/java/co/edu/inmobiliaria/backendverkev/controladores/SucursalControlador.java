@@ -16,7 +16,7 @@ public class SucursalControlador {
     @Autowired
     private SucursalServiceImp sucursalServiceImp;
 
-    @GetMapping("/getAll")
+    @GetMapping("/listar")
     public List<SucursalDTO> getAll() {
         return sucursalServiceImp.listar();
     }
