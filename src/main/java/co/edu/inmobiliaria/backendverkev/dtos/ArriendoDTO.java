@@ -25,12 +25,14 @@ public class ArriendoDTO {
         this.detalles_inmueble = arriendo.getInmueble().getDetalles();
         this.direccion = arriendo.getInmueble().getDireccion();
         this.propietario = arriendo.getInmueble().getPersona().getNombre();
-        Optional<String> comercial = arriendo.getPersonaArriendoList().stream()
-                .filter(pa -> pa.getPersona().getTipoPersona().getDescripcion().equalsIgnoreCase("Comercial"))
-                .map(pa -> pa.getPersona().getNombre())
-                .findFirst();
-        if (comercial.isPresent()) {
-            this.comercial_encargado = comercial.get();
+        if (arriendo.getPersonaArriendoList() != null) {
+            Optional<String> comercial = arriendo.getPersonaArriendoList().stream()
+                    .filter(pa -> pa.getPersona().getTipoPersona().getDescripcion().equalsIgnoreCase("Comercial"))
+                    .map(pa -> pa.getPersona().getNombre())
+                    .findFirst();
+            if (comercial.isPresent()) {
+                this.comercial_encargado = comercial.get();
+            }
         }
     }
 

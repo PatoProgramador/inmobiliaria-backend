@@ -4,7 +4,9 @@ import co.edu.inmobiliaria.backendverkev.dominio.Arriendo;
 import co.edu.inmobiliaria.backendverkev.dominio.Inmueble;
 import co.edu.inmobiliaria.backendverkev.dominio.PersonaArriendo;
 import co.edu.inmobiliaria.backendverkev.dtos.ArriendoDTO;
+import co.edu.inmobiliaria.backendverkev.dtos.InmuebleDTO;
 import co.edu.inmobiliaria.backendverkev.inputdtos.ArriendoInputDTO;
+import co.edu.inmobiliaria.backendverkev.inputdtos.InmubleInputDTO;
 import co.edu.inmobiliaria.backendverkev.repositorios.ArriendoRepository;
 import co.edu.inmobiliaria.backendverkev.servicios.inmueble.InmuebleServiceImp;
 import co.edu.inmobiliaria.backendverkev.servicios.persona.PersonaServiceImp;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,9 +26,6 @@ import java.util.stream.Collectors;
 public class ArriendoServiceImp implements ArriendoService{
     @Autowired
     private ArriendoRepository arriendoRepository;
-
-    @Autowired
-    private PersonaServiceImp personaServiceImp;
 
     @Autowired
     private PersonaArriendoServiceImp personaArriendoServiceImp;
@@ -66,7 +66,15 @@ public class ArriendoServiceImp implements ArriendoService{
         PersonaArriendo personaArriendo1 = personaArriendoServiceImp.crearPersonaArriendo(idPropietario, arriendo);
         PersonaArriendo personaArriendo2 = personaArriendoServiceImp.crearPersonaArriendo(idComercial, arriendo);
         PersonaArriendo personaArriendo3 = personaArriendoServiceImp.crearPersonaArriendo(idArrendatario, arriendo);
-
+        List<PersonaArriendo> personaArriendoList = new ArrayList<>();
+        personaArriendoList.add(personaArriendo1);
+        personaArriendoList.add(personaArriendo2);
+        personaArriendoList.add(personaArriendo3);
+        arriendo.setPersonaArriendoList(personaArriendoList);
+        // estado del inmueble a falso
+        InmubleInputDTO inmubleInputDTO = new InmubleInputDTO();
+        inmubleInputDTO.setDisponible(Boolean.FALSE);
+        InmuebleDTO inmuebleDTO = inmuebleServiceImp.modificarInmueble(idInmueble, 0L, inmubleInputDTO);
         return new ArriendoDTO(arriendo);
     }
 }

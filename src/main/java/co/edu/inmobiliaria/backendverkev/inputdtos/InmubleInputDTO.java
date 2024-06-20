@@ -5,6 +5,7 @@ public class InmubleInputDTO {
     private String direccion;
     private Boolean disponible;
 
+    public InmubleInputDTO() {}
     public InmubleInputDTO(String detalles, String direccion, Boolean disponible) {
         this.detalles = detalles;
         this.direccion = direccion;
@@ -21,6 +22,10 @@ public class InmubleInputDTO {
 
     public String getDetalles() {
         return detalles;
+    }
+
+    public void setDisponible(Boolean disponible) {
+        this.disponible = disponible;
     }
 
     public String getDireccion() {
