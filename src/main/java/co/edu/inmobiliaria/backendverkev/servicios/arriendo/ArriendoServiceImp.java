@@ -9,9 +9,8 @@ import co.edu.inmobiliaria.backendverkev.inputdtos.ArriendoInputDTO;
 import co.edu.inmobiliaria.backendverkev.inputdtos.InmubleInputDTO;
 import co.edu.inmobiliaria.backendverkev.repositorios.ArriendoRepository;
 import co.edu.inmobiliaria.backendverkev.servicios.inmueble.InmuebleServiceImp;
-import co.edu.inmobiliaria.backendverkev.servicios.persona.PersonaServiceImp;
-import co.edu.inmobiliaria.backendverkev.servicios.personaArriendo.PersonaArriendoService;
 import co.edu.inmobiliaria.backendverkev.servicios.personaArriendo.PersonaArriendoServiceImp;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +41,17 @@ public class ArriendoServiceImp implements ArriendoService{
     }
 
     @Override
+    public Arriendo encontrarArriendoPorId(Long id) {
+        Optional<Arriendo> arriendo = arriendoRepository.findById(id);
+
+        if (arriendo.isPresent()) {
+            return arriendo.get();
+        } else {
+            throw new EntityNotFoundException("No se encontró el arriendo con id " + id);
+        }
+    }
+
+    @Override
     public ArriendoDTO crearArriendo(Long idPropietario, Long idComercial, Long idArrendatario, Long idInmueble, ArriendoInputDTO arriendoInputDTO) {
         Arriendo arriendo = new Arriendo();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
@@ -57,7 +68,7 @@ public class ArriendoServiceImp implements ArriendoService{
 
             arriendo.setFecha_inicio(fechaInicio);
             arriendo.setFecha_final(fechaFinal);
-        }catch (ParseException e) {
+        } catch (ParseException e) {
             System.out.println("Error al convertir la fecha: " + e.getMessage());
         }
         // instancia
@@ -77,4 +88,69 @@ public class ArriendoServiceImp implements ArriendoService{
         InmuebleDTO inmuebleDTO = inmuebleServiceImp.modificarInmueble(idInmueble, 0L, inmubleInputDTO);
         return new ArriendoDTO(arriendo);
     }
+
+    @Override
+    public ArriendoDTO modificarArriendo(Long idArriendo, Long idPropietario, Long idComercial, Long idArrendatario, Long idInmueble, ArriendoInputDTO arriendoInputDTO) {
+        Optional<Arriendo> arriendo = arriendoRepository.findById(idArriendo);
+        if (arriendo.isPresent()) {
+            Arriendo arriendoDB = arriendo.get();
+            // operaciones con personaArriendo
+            List<PersonaArriendo> personaArriendoList = new ArrayList<>();
+            if (idPropietario != 0) {
+                PersonaArriendo personaArriendo = modificarPersonaArriendo(idArriendo, idPropietario);
+                personaArriendoList.add(personaArriendo);
+            }
+            if (idComercial != 0) {
+                PersonaArriendo personaArriendo = modificarPersonaArriendo(idArriendo, idComercial);
+                personaArriendoList.add(personaArriendo);
+            }
+            if (idArrendatario != 0) {
+                PersonaArriendo personaArriendo = modificarPersonaArriendo(idArriendo, idArrendatario);
+                personaArriendoList.add(personaArriendo);
+            }
+            if (personaArriendoList.size() > 0) {
+                arriendoDB.setPersonaArriendoList(personaArriendoList);
+            }
+            // con inmueble
+            if (idInmueble != 0) {
+                Inmueble inmueble = inmuebleServiceImp.encontrarPorIdInmueble(idInmueble);
+                arriendoDB.setInmueble(inmueble);
+            }
+            // con alguna de sus propiedades...
+            if (arriendoInputDTO.getDetalles() != null) {
+                arriendoDB.setDetalles(arriendoInputDTO.getDetalles());
+            }
+            if (arriendoInputDTO.getMonto() != null) {
+                arriendoDB.setMonto(arriendoInputDTO.getMonto());
+            }
+            // fechas...
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
+            if (arriendoInputDTO.getFechaInicio() != null) {
+                try {
+                    Date fechaInicio = simpleDateFormat.parse(arriendoInputDTO.getFechaInicio());
+                    arriendoDB.setFecha_inicio(fechaInicio);
+                } catch (ParseException e) {
+                    System.out.println("Error al convertir la fecha: " + e.getMessage());
+                }
+            }
+            if (arriendoInputDTO.getFechaFinal() != null) {
+                try {
+                    Date fechaFin = simpleDateFormat.parse(arriendoInputDTO.getFechaFinal());
+                    arriendoDB.setFecha_final(fechaFin);
+                } catch (ParseException e) {
+                    System.out.println("Error al convertir la fecha: " + e.getMessage());
+                }
+            }
+            arriendoRepository.save(arriendoDB);
+            return new ArriendoDTO(arriendoDB);
+        } else {
+            throw new EntityNotFoundException("No se encontró el arriendo con id " + idArriendo);
+        }
+    }
+
+    public PersonaArriendo modificarPersonaArriendo(Long idArriendo, Long idNewPerson) {
+        PersonaArriendo personaArriendoFind = personaArriendoServiceImp.encontrarPorIdArriendo(idArriendo);
+        return personaArriendoServiceImp.modificarPersonaArriendo((long) personaArriendoFind.getId(), idNewPerson);
+    }
+
 }

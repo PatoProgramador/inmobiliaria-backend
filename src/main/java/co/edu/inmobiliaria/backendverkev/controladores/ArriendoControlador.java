@@ -24,4 +24,9 @@ public class ArriendoControlador {
     public ArriendoDTO crearArriendo(@PathVariable Long idPropietario, @PathVariable Long idComercial, @PathVariable Long idArrendatario, @PathVariable Long idInmueble, @RequestBody ArriendoInputDTO arriendoInputDTO) {
         return arriendoServiceImp.crearArriendo(idPropietario, idComercial, idArrendatario, idInmueble, arriendoInputDTO);
     }
+
+    @PutMapping("/{idArriendo}/modificar/arriendo/propietario/{idPropietario}/comercial/{idComercial}/arrendatario/{idArrendatario}/inmueble/{idInmueble}")
+    public ArriendoDTO modificarArriendo(@PathVariable Long idArriendo, @PathVariable Long idPropietario, @PathVariable Long idComercial, @PathVariable Long idArrendatario, @PathVariable Long idInmueble, @RequestBody ArriendoInputDTO arriendoInputDTO) {
+        return arriendoServiceImp.modificarArriendo(idArriendo, idPropietario, idComercial, idArrendatario, idInmueble, arriendoInputDTO);
+    }
 }
