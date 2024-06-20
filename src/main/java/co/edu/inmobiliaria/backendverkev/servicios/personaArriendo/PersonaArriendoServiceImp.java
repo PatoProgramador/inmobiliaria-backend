@@ -20,8 +20,8 @@ public class PersonaArriendoServiceImp implements PersonaArriendoService {
     private PersonaServiceImp personaServiceImp;
 
     @Override
-    public PersonaArriendo encontrarPorIdArriendo(Long idArriendo) {
-        return personaArriendoRepository.encontrarPersonaArriendoPorIdArriendo(idArriendo);
+    public PersonaArriendo encontrarPorIdArriendoIdPersona(Long idArriendo, Long idPersona) {
+        return personaArriendoRepository.encontrarPersonaArriendoPorIdArriendo(idArriendo, idPersona);
     }
 
     @Override

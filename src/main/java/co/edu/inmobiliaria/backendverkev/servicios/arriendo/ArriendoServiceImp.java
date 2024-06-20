@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -96,16 +93,34 @@ public class ArriendoServiceImp implements ArriendoService{
             Arriendo arriendoDB = arriendo.get();
             // operaciones con personaArriendo
             List<PersonaArriendo> personaArriendoList = new ArrayList<>();
+            // buscamos el id del propietaario mediante el inmueble
+            int propietarioDB = arriendoDB.getInmueble().getPersona().getId();
+            // buscamos el id del comercial
+            Optional<Integer> comercialDB = arriendoDB.getPersonaArriendoList().stream()
+                    .filter(ar -> ar.getPersona().getTipoPersona().getDescripcion().equalsIgnoreCase("Comercial"))
+                    .findFirst()
+                    .map(ar -> ar.getPersona().getId());
+            // buscamos el id del arrendatario
+            int arrendatarioDB = arriendoDB.getPersonaArriendoList().stream()
+                    .filter(ar -> !ar.getPersona().getTipoPersona().getDescripcion().equalsIgnoreCase("Comercial") && ar.getPersona().getId() != propietarioDB)
+                    .findFirst()
+                    .map(ar -> ar.getPersona().getId())
+                    .orElseThrow(() -> new NoSuchElementException("No se encontró ninguna persona con tipo 'Comercial'"));
             if (idPropietario != 0) {
-                PersonaArriendo personaArriendo = modificarPersonaArriendo(idArriendo, idPropietario);
+                PersonaArriendo personaArriendo = modificarPersonaArriendo(idArriendo, (long) propietarioDB, idPropietario);
                 personaArriendoList.add(personaArriendo);
             }
             if (idComercial != 0) {
-                PersonaArriendo personaArriendo = modificarPersonaArriendo(idArriendo, idComercial);
+                PersonaArriendo personaArriendo;
+                if (comercialDB.isPresent()) {
+                    personaArriendo = modificarPersonaArriendo(idArriendo, (long) comercialDB.get(), idComercial);
+                } else {
+                    personaArriendo = personaArriendoServiceImp.crearPersonaArriendo(idComercial, arriendoDB);
+                }
                 personaArriendoList.add(personaArriendo);
             }
             if (idArrendatario != 0) {
-                PersonaArriendo personaArriendo = modificarPersonaArriendo(idArriendo, idArrendatario);
+                PersonaArriendo personaArriendo = modificarPersonaArriendo(idArriendo, (long) arrendatarioDB, idArrendatario);
                 personaArriendoList.add(personaArriendo);
             }
             if (personaArriendoList.size() > 0) {
@@ -141,15 +156,15 @@ public class ArriendoServiceImp implements ArriendoService{
                     System.out.println("Error al convertir la fecha: " + e.getMessage());
                 }
             }
-            arriendoRepository.save(arriendoDB);
-            return new ArriendoDTO(arriendoDB);
+            Arriendo arriendoUpd = arriendoRepository.save(arriendoDB);
+            return new ArriendoDTO(arriendoUpd);
         } else {
             throw new EntityNotFoundException("No se encontró el arriendo con id " + idArriendo);
         }
     }
 
-    public PersonaArriendo modificarPersonaArriendo(Long idArriendo, Long idNewPerson) {
-        PersonaArriendo personaArriendoFind = personaArriendoServiceImp.encontrarPorIdArriendo(idArriendo);
+    public PersonaArriendo modificarPersonaArriendo(Long idArriendo, Long idPerson, Long idNewPerson) {
+        PersonaArriendo personaArriendoFind = personaArriendoServiceImp.encontrarPorIdArriendoIdPersona(idArriendo, idPerson);
         return personaArriendoServiceImp.modificarPersonaArriendo((long) personaArriendoFind.getId(), idNewPerson);
     }
 
