@@ -54,5 +54,6 @@ public class PersonaArriendoServiceImp implements PersonaArriendoService {
 
     @Override
     public void eliminarPersonaArriendo(Long idPersonaArriendo) {
+        personaArriendoRepository.deleteById(idPersonaArriendo);
     }
 }

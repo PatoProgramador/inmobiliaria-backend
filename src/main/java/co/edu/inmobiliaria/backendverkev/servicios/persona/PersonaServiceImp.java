@@ -156,6 +156,7 @@ public class PersonaServiceImp implements PersonaService {
         }
     }
 
+    @Transactional
     @Override
     public PersonaDTO eliminarPersona(Long idPersona) {
         Optional<Persona> dbPersona = personaRepository.findById(idPersona);

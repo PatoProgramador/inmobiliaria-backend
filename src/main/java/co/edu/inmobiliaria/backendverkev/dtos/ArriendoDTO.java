@@ -2,6 +2,7 @@ package co.edu.inmobiliaria.backendverkev.dtos;
 
 import co.edu.inmobiliaria.backendverkev.dominio.Arriendo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
@@ -37,7 +38,8 @@ public class ArriendoDTO {
     }
 
     public String[] convertirFechaStringSinHora(Date fecha) {
-        String fechaS = String.valueOf(fecha);
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaS = formato.format(fecha);
 
         return fechaS.split(" ");
     }
