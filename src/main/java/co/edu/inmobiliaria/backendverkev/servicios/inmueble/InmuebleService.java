@@ -9,6 +9,8 @@ import java.util.List;
 public interface InmuebleService {
     List<InmuebleDTO> listar();
 
+    List<InmuebleDTO> listarPorCiudad(String ciudad);
+
     InmuebleDTO encontrarPorIdInmuebleDTO(Long id);
     Inmueble encontrarPorIdInmueble(Long id);
 

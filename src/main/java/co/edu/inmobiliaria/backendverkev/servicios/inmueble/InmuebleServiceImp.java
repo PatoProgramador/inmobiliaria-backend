@@ -32,6 +32,14 @@ public class InmuebleServiceImp implements InmuebleService{
     }
 
     @Override
+    public List<InmuebleDTO> listarPorCiudad(String ciudad) {
+        List<Inmueble> inmueblesDb = inmuebleRepository.listarInmueblesPorCiudad(ciudad);
+        return inmueblesDb.stream()
+                .map(i -> new InmuebleDTO(i))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public InmuebleDTO encontrarPorIdInmuebleDTO(Long id) {
         Optional<Inmueble> inmueble = inmuebleRepository.findById(id);
 
