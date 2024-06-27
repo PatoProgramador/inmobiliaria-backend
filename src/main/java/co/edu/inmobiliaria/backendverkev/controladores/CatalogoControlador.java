@@ -3,6 +3,7 @@ package co.edu.inmobiliaria.backendverkev.controladores;
 import co.edu.inmobiliaria.backendverkev.dominio.TipoPersona;
 import co.edu.inmobiliaria.backendverkev.dtos.CiudadDTO;
 import co.edu.inmobiliaria.backendverkev.dtos.TipoIdentificacionDTO;
+import co.edu.inmobiliaria.backendverkev.dtos.TipoPersonaDTO;
 import co.edu.inmobiliaria.backendverkev.servicios.ciudad.CiudadServiceImp;
 import co.edu.inmobiliaria.backendverkev.servicios.tipoIdentificacion.TipoIdentificacionServiceImp;
 import co.edu.inmobiliaria.backendverkev.servicios.tipoPersona.TipoPersonaServiceImp;
@@ -36,6 +37,6 @@ public class CatalogoControlador {
     }
 
     @GetMapping("/tipoPersona/listar")
-    public List<TipoPersona> listarTiposPersona() { return tipoPersonaServiceImp.listar();}
+    public List<TipoPersonaDTO> listarTiposPersona() { return tipoPersonaServiceImp.listar();}
 
 }
