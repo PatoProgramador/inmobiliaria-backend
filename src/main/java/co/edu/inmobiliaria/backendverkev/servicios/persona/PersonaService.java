@@ -13,7 +13,9 @@ public interface PersonaService {
     Persona traerPorIdPersona(Long idPersona);
     PersonaDTO traerPorIdDTO(Long idPersona);
 
+    PersonaDTO traerPorTipoDocumentYDoc(Long idTipoDocumento, String documento);
     PersonaDTO crearPersona(Long idTipoPersona, Long idTipoIdentificacion, Long idSucursal, PersonaInputDTO personaInputDTO);
     PersonaDTO modificarPersona(Long idPersona, Long idTipoPersona, Long idTipoIdentificacion, Long idSucursal, PersonaInputDTO personaInputDTO);
+
     PersonaDTO eliminarPersona(Long idPersona);
 }

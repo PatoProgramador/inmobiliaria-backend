@@ -65,6 +65,17 @@ public class PersonaServiceImp implements PersonaService {
     }
 
     @Override
+    public PersonaDTO traerPorTipoDocumentYDoc(Long idTipoDocumento, String documento) {
+        Optional<Persona> persona = personaRepository.traerPorTipoDocyDoc(idTipoDocumento, documento);
+
+        if (persona.isPresent()) {
+            return new PersonaDTO(persona.get());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public PersonaDTO crearPersona(Long idTipoPersona, Long idTipoIdentificacion, Long idSucursal, PersonaInputDTO personaInputDTO) {
         Persona persona = new Persona();
 
