@@ -25,6 +25,11 @@ public class InmuebleControlador {
     @GetMapping("/listar/{ciudad}")
     public List<InmuebleDTO> listarInmueblesPorCiudad(@PathVariable String ciudad) { return inmuebleServiceImp.listarPorCiudad(ciudad);}
 
+    @GetMapping("listar/persona/{idPersona}")
+    public List<InmuebleDTO> listarPorPersona(@PathVariable Long idPersona) {
+        return inmuebleServiceImp.listarPorPersona(idPersona);
+    }
+
     @GetMapping("/{idInmueble}")
     public InmuebleDTO obtenerPorId(@PathVariable Long idInmueble) {
         return inmuebleServiceImp.encontrarPorIdInmuebleDTO(idInmueble);

@@ -10,6 +10,7 @@ public interface InmuebleService {
     List<InmuebleDTO> listar();
 
     List<InmuebleDTO> listarPorCiudad(String ciudad);
+    List<InmuebleDTO> listarPorPersona(Long id);
 
     InmuebleDTO encontrarPorIdInmuebleDTO(Long id);
     Inmueble encontrarPorIdInmueble(Long id);

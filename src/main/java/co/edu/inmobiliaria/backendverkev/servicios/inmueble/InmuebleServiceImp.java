@@ -40,6 +40,18 @@ public class InmuebleServiceImp implements InmuebleService{
     }
 
     @Override
+    public List<InmuebleDTO> listarPorPersona(Long id) {
+        List<Inmueble> inmuebles = inmuebleRepository.obtenerInmueblesPorPersona(id);
+        if (inmuebles.size() > 0) {
+            return inmuebles.stream()
+                    .map(i -> new InmuebleDTO(i))
+                    .collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public InmuebleDTO encontrarPorIdInmuebleDTO(Long id) {
         Optional<Inmueble> inmueble = inmuebleRepository.findById(id);
 
