@@ -2,6 +2,7 @@ package co.edu.inmobiliaria.backendverkev.controladores;
 
 import co.edu.inmobiliaria.backendverkev.dominio.Inmueble;
 import co.edu.inmobiliaria.backendverkev.dtos.InmuebleDTO;
+import co.edu.inmobiliaria.backendverkev.dtos.PersonaDTO;
 import co.edu.inmobiliaria.backendverkev.inputdtos.InmubleInputDTO;
 import co.edu.inmobiliaria.backendverkev.servicios.inmueble.InmuebleServiceImp;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -33,6 +34,11 @@ public class InmuebleControlador {
     @GetMapping("/{idInmueble}")
     public InmuebleDTO obtenerPorId(@PathVariable Long idInmueble) {
         return inmuebleServiceImp.encontrarPorIdInmuebleDTO(idInmueble);
+    }
+
+    @GetMapping("/{idInmueble}/propietario")
+    public PersonaDTO obtenerPropietario(@PathVariable Long idInmueble) {
+        return inmuebleServiceImp.obtenerPorPropietario(idInmueble);
     }
     @PostMapping("/crearInmueble/persona/{idPersona}")
     public InmuebleDTO crearInmueble(@PathVariable Long idPersona, @RequestBody InmubleInputDTO inmubleInputDTO) {

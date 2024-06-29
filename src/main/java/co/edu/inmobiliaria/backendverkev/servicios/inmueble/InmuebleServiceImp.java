@@ -3,6 +3,7 @@ package co.edu.inmobiliaria.backendverkev.servicios.inmueble;
 import co.edu.inmobiliaria.backendverkev.dominio.Inmueble;
 import co.edu.inmobiliaria.backendverkev.dominio.Persona;
 import co.edu.inmobiliaria.backendverkev.dtos.InmuebleDTO;
+import co.edu.inmobiliaria.backendverkev.dtos.PersonaDTO;
 import co.edu.inmobiliaria.backendverkev.inputdtos.InmubleInputDTO;
 import co.edu.inmobiliaria.backendverkev.repositorios.InmuebleRepository;
 import co.edu.inmobiliaria.backendverkev.servicios.persona.PersonaServiceImp;
@@ -49,6 +50,12 @@ public class InmuebleServiceImp implements InmuebleService{
         } else {
             return null;
         }
+    }
+
+    @Override
+    public PersonaDTO obtenerPorPropietario(Long id) {
+        Optional<Inmueble> inmueble = inmuebleRepository.findById(id);
+        return inmueble.map(value -> new PersonaDTO(value.getPersona())).orElse(null);
     }
 
     @Override
