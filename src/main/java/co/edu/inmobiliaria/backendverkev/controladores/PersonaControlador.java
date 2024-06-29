@@ -25,6 +25,11 @@ public class PersonaControlador {
         return personaServiceImp.traerPorIdDTO(idPersona);
     }
 
+    @GetMapping("/listar/comerciales")
+    public List<PersonaDTO> traerTodosLosComerciales() {
+        return personaServiceImp.traerTodosLosComerciales();
+    }
+
     @GetMapping("/tipoDocumento/{idTipoDocumento}/documento/{documento}")
     public PersonaDTO traerPersonaPorTipoDocumentYDoc(@PathVariable Long idTipoDocumento, @PathVariable String documento){
         return personaServiceImp.traerPorTipoDocumentYDoc(idTipoDocumento, documento);

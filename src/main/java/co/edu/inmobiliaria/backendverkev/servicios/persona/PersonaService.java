@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface PersonaService {
 
     List<PersonaDTO> listar();
+    List<PersonaDTO> traerTodosLosComerciales();
     Persona traerPorIdPersona(Long idPersona);
     PersonaDTO traerPorIdDTO(Long idPersona);
 

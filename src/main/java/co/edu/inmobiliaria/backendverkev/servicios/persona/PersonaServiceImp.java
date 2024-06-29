@@ -181,4 +181,13 @@ public class PersonaServiceImp implements PersonaService {
             throw new EntityNotFoundException("No se encontró la persona con id " + idPersona);
         }
     }
+
+    @Override
+    public List<PersonaDTO> traerTodosLosComerciales() {
+        List<Persona> personas = personaRepository.findAll();
+        return personas.stream()
+                .filter(p -> p.getTipoPersona().getClave().equalsIgnoreCase("COME"))
+                .map(p -> new PersonaDTO(p))
+                .collect(Collectors.toList());
+    }
 }
