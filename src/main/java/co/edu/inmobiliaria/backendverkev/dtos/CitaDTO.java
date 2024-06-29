@@ -1,6 +1,8 @@
 package co.edu.inmobiliaria.backendverkev.dtos;
 
 import co.edu.inmobiliaria.backendverkev.dominio.Citas;
+import co.edu.inmobiliaria.backendverkev.dominio.Persona;
+import co.edu.inmobiliaria.backendverkev.dominio.PersonaCita;
 
 import java.text.SimpleDateFormat;
 import java.util.Optional;
@@ -9,7 +11,10 @@ public class CitaDTO {
     private Long id;
     private String fecha_de_cita;
     private String dirrecion_inmueble;
+    private String descripcion;
+    private int id_propietario;
     private String propietario;
+    private int id_comercial;
     private String comercial;
 
     public CitaDTO(Citas citas) {
@@ -18,14 +23,16 @@ public class CitaDTO {
         String fechaS = formato.format(citas.getFecha());
         this.fecha_de_cita = fechaS.split(" ")[0];
         this.dirrecion_inmueble = citas.getInmueble().getDireccion();
+        this.id_propietario = citas.getInmueble().getPersona().getId();
         this.propietario = citas.getInmueble().getPersona().getNombre();
+        this.descripcion = citas.getDescripcion();
         if (citas.getPersonaCitaList() != null) {
-            Optional<String> comercial = citas.getPersonaCitaList().stream()
+            Optional<PersonaCita> comercial = citas.getPersonaCitaList().stream()
                     .filter(pc -> pc.getPersona().getTipoPersona().getDescripcion().equalsIgnoreCase("Comercial"))
-                    .map(pc -> pc.getPersona().getNombre())
                     .findFirst();
             if (comercial.isPresent()) {
-                this.comercial = comercial.get();
+                this.id_comercial = comercial.get().getPersona().getId();
+                this.comercial = comercial.get().getPersona().getNombre();
             }
         }
     }
@@ -68,5 +75,29 @@ public class CitaDTO {
 
     public void setComercial(String comercial) {
         this.comercial = comercial;
+    }
+
+    public int getId_propietario() {
+        return id_propietario;
+    }
+
+    public void setId_propietario(int id_propietario) {
+        this.id_propietario = id_propietario;
+    }
+
+    public int getId_comercial() {
+        return id_comercial;
+    }
+
+    public void setId_comercial(int id_comercial) {
+        this.id_comercial = id_comercial;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

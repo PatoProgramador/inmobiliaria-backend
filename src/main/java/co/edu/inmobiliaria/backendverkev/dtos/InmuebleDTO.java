@@ -7,6 +7,7 @@ public class InmuebleDTO {
     private String detalles;
     private String direccion;
     private Boolean disponible;
+    private int id_Propietario;
     private String propietario;
     private Double precio;
 
@@ -16,6 +17,7 @@ public class InmuebleDTO {
         this.direccion = inmueble.getDireccion();
         this.disponible = inmueble.getDisponible();
         this.propietario = inmueble.getPersona().getNombre();
+        this.id_Propietario = inmueble.getPersona().getId();
         if (inmueble.getAvaluoList() != null && inmueble.getAvaluoList().size() > 0) {
             // asignamos el ultimo avaluo
             int lastItemIndex = inmueble.getAvaluoList().size() - 1;
@@ -69,5 +71,13 @@ public class InmuebleDTO {
 
     public void setPrecio(Double precio) {
         this.precio = precio;
+    }
+
+    public int getId_Propietario() {
+        return id_Propietario;
+    }
+
+    public void setId_Propietario(int id_Propietario) {
+        this.id_Propietario = id_Propietario;
     }
 }
