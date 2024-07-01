@@ -37,7 +37,7 @@ public class CompraServiceImp implements CompraService{
         Compra compra = new Compra();
         // se setea en falso en tanto no ha sido pago
         compra.setEstado(Boolean.FALSE);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         // Buscamos el inmueble relacionado
         Inmueble inmuebleDb = inmuebleServiceImp.encontrarPorIdInmueble(idInmueble);
         compra.setInmueble(inmuebleDb);

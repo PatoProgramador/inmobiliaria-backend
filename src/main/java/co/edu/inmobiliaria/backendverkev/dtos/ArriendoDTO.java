@@ -21,7 +21,9 @@ public class ArriendoDTO {
         this.id = arriendo.getId();
         this.detalles = arriendo.getDetalles();
         this.fecha_inicio = convertirFechaStringSinHora(arriendo.getFecha_inicio())[0];
-        this.fecha_fin = convertirFechaStringSinHora(arriendo.getFecha_final())[0];
+        if (arriendo.getFecha_final() != null) {
+            this.fecha_fin = convertirFechaStringSinHora(arriendo.getFecha_final())[0];
+        }
         this.monto = arriendo.getMonto();
         this.detalles_inmueble = arriendo.getInmueble().getDetalles();
         this.direccion = arriendo.getInmueble().getDireccion();

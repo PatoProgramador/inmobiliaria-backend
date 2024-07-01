@@ -16,6 +16,8 @@ public class CompraDTO {
     private String propietario;
     private int id_comercial;
     private String comercial;
+    private int id_cuenta_cobro;
+    private String cuenta_cobro;
 
     public CompraDTO() {}
 
@@ -32,7 +34,6 @@ public class CompraDTO {
         int lastItemIndex = compra.getInmueble().getAvaluoList().size() - 1;
         this.monto = compra.getInmueble().getAvaluoList().get(lastItemIndex).getPrecio();
         this.id_propietario = compra.getInmueble().getPersona().getId();
-        System.out.println(compra.getPersonaCompraList());
         Optional<PersonaCompra> comercial = compra.getPersonaCompraList().stream()
                 .filter(pc -> pc.getPersona().getTipoPersona().getDescripcion().equalsIgnoreCase("Comercial"))
                 .findFirst();
@@ -41,6 +42,8 @@ public class CompraDTO {
             this.id_comercial = comercial.get().getPersona().getId();
             this.comercial = comercial.get().getPersona().getNombre();
         }
+        this.id_cuenta_cobro = compra.getCuentaCobro().getId();
+        this.cuenta_cobro = compra.getCuentaCobro().getCuenta();
     }
 
     public int getId() {
@@ -105,5 +108,21 @@ public class CompraDTO {
 
     public void setComercial(String comercial) {
         this.comercial = comercial;
+    }
+
+    public int getId_cuenta_cobro() {
+        return id_cuenta_cobro;
+    }
+
+    public void setId_cuenta_cobro(int id_cuenta_cobro) {
+        this.id_cuenta_cobro = id_cuenta_cobro;
+    }
+
+    public String getCuenta_cobro() {
+        return cuenta_cobro;
+    }
+
+    public void setCuenta_cobro(String cuenta_cobro) {
+        this.cuenta_cobro = cuenta_cobro;
     }
 }

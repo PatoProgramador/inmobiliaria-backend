@@ -37,7 +37,7 @@ public class CitaServiceImp implements CitaService {
     @Override
     public CitaDTO crearCita(Long idInmueble, Long idPropietario, Long idComprador, Long idComercial, CitaInputDTO citaInputDTO) {
         Citas citas = new Citas();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         // Busquedas
         Inmueble inmueble = inmuebleServiceImp.encontrarPorIdInmueble(idInmueble);
         // atributos
