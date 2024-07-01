@@ -2,7 +2,6 @@ package co.edu.inmobiliaria.backendverkev.servicios.personaCompra;
 
 import co.edu.inmobiliaria.backendverkev.dominio.Compra;
 import co.edu.inmobiliaria.backendverkev.dominio.Persona;
-import co.edu.inmobiliaria.backendverkev.dominio.PersonaCita;
 import co.edu.inmobiliaria.backendverkev.dominio.PersonaCompra;
 import co.edu.inmobiliaria.backendverkev.repositorios.PersonaCompraRepository;
 import co.edu.inmobiliaria.backendverkev.servicios.persona.PersonaServiceImp;

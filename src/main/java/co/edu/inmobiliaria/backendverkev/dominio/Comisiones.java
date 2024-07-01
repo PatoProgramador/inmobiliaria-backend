@@ -10,6 +10,7 @@ public class Comisiones {
     private int id;
 
     private Double porcentaje;
+    private Double monto;
 
     @ManyToOne
     @JoinColumn(name = "id_venta")
@@ -39,5 +40,13 @@ public class Comisiones {
 
     public void setVenta(Venta venta) {
         this.venta = venta;
+    }
+
+    public Double getMonto() {
+        return monto;
+    }
+
+    public void setMonto(Double monto) {
+        this.monto = monto;
     }
 }
