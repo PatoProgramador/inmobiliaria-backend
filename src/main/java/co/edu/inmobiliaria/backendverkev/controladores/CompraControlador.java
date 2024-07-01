@@ -1,6 +1,5 @@
 package co.edu.inmobiliaria.backendverkev.controladores;
 
-import co.edu.inmobiliaria.backendverkev.dominio.Compra;
 import co.edu.inmobiliaria.backendverkev.dtos.CompraDTO;
 import co.edu.inmobiliaria.backendverkev.inputdtos.CompraInputDTO;
 import co.edu.inmobiliaria.backendverkev.servicios.compra.CompraServiceImp;
