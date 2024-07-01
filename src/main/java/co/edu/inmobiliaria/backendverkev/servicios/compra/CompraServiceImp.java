@@ -4,6 +4,7 @@ import co.edu.inmobiliaria.backendverkev.dominio.Compra;
 import co.edu.inmobiliaria.backendverkev.dominio.CuentaCobro;
 import co.edu.inmobiliaria.backendverkev.dominio.Inmueble;
 import co.edu.inmobiliaria.backendverkev.dominio.PersonaCompra;
+import co.edu.inmobiliaria.backendverkev.dtos.CompraDTO;
 import co.edu.inmobiliaria.backendverkev.inputdtos.CompraInputDTO;
 import co.edu.inmobiliaria.backendverkev.repositorios.CompraRepository;
 import co.edu.inmobiliaria.backendverkev.servicios.cuentaCobro.CuentaCobroServiceImp;
@@ -32,7 +33,7 @@ public class CompraServiceImp implements CompraService{
     private PersonaCompraServiceImp personaCompraServiceImp;
 
     @Override
-    public Compra crearCompra(Long idPropietario, Long idComercial, Long idComprador, Long idInmueble, CompraInputDTO compraInputDTO) {
+    public CompraDTO crearCompra(Long idPropietario, Long idComercial, Long idComprador, Long idInmueble, CompraInputDTO compraInputDTO) {
         Compra compra = new Compra();
         // se setea en falso en tanto no ha sido pago
         compra.setEstado(Boolean.FALSE);
@@ -69,7 +70,7 @@ public class CompraServiceImp implements CompraService{
                 personaCompraServiceImp.crearPersonaCompra(idComprador, compraDB)
                 ));
         compra.setPersonaCompraList(personaCompraList);
-        return compra;
+        return new CompraDTO(compra);
     }
 
     private String generarUUID() throws NoSuchAlgorithmException {
