@@ -4,6 +4,7 @@ import co.edu.inmobiliaria.backendverkev.dominio.Comisiones;
 import co.edu.inmobiliaria.backendverkev.dominio.Inmueble;
 import co.edu.inmobiliaria.backendverkev.dominio.PersonaVenta;
 import co.edu.inmobiliaria.backendverkev.dominio.Venta;
+import co.edu.inmobiliaria.backendverkev.dtos.VentaDTO;
 import co.edu.inmobiliaria.backendverkev.inputdtos.VentaInputDTO;
 import co.edu.inmobiliaria.backendverkev.repositorios.VentaRepository;
 import co.edu.inmobiliaria.backendverkev.servicios.comision.ComisionServiceImp;
@@ -31,7 +32,7 @@ public class VentaServiceImp implements VentaService{
     private ComisionServiceImp comisionServiceImp;
 
     @Override
-    public Venta crearVenta(Long idPropietario, Long idComercial, Long idComprador, Long idInmueble, VentaInputDTO ventaInputDTO) {
+    public VentaDTO crearVenta(Long idPropietario, Long idComercial, Long idComprador, Long idInmueble, VentaInputDTO ventaInputDTO) {
         Venta venta = new Venta();
         // inmueble asociado
         Inmueble inmueble = inmuebleServiceImp.encontrarPorIdInmueble(idInmueble);
@@ -58,6 +59,6 @@ public class VentaServiceImp implements VentaService{
                 comisionServiceImp.crearComisiones(venta)
         ));
         venta.setComisionesList(comisiones);
-        return venta;
+        return new VentaDTO(venta);
     }
 }
