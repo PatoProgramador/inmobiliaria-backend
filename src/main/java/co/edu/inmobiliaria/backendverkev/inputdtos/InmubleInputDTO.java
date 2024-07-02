@@ -1,15 +1,17 @@
 package co.edu.inmobiliaria.backendverkev.inputdtos;
 
+import co.edu.inmobiliaria.backendverkev.dominio.Inmueble;
+
 public class InmubleInputDTO {
     private String detalles;
     private String direccion;
     private Boolean disponible;
 
     public InmubleInputDTO() {}
-    public InmubleInputDTO(String detalles, String direccion, Boolean disponible) {
-        this.detalles = detalles;
-        this.direccion = direccion;
-        if (disponible != null) {
+    public InmubleInputDTO(Inmueble inmueble) {
+        this.detalles = inmueble.getDetalles();
+        this.direccion = inmueble.getDireccion();
+        if (inmueble.getDisponible() != null) {
             this.disponible = disponible;
         } else {
             this.disponible = null;

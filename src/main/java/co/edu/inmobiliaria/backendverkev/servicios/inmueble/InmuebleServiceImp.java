@@ -81,6 +81,15 @@ public class InmuebleServiceImp implements InmuebleService{
     }
 
     @Override
+    public Inmueble encontrarInmueblePropietario(Long id) {
+        List<Inmueble> inmuebles = inmuebleRepository.findAll();
+        Optional<Inmueble> inmueble =  inmuebles.stream()
+                .filter(i -> i.getPersona().getId() == id)
+                .findFirst();
+        return inmueble.orElse(null);
+    }
+
+    @Override
     public InmuebleDTO crearInmueble(Long idPersona, InmubleInputDTO inmubleInputDTO) {
         Inmueble inmueble = new Inmueble();
         // persona relacionada

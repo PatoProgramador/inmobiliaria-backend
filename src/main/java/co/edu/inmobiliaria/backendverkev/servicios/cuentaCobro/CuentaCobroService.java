@@ -9,5 +9,7 @@ public interface CuentaCobroService {
     List<CuentaCobroDTO> listarCuentasPendientesCompras(Long idPersona);
     List<CuentaCobroDTO> listarCuentasPendientesArriendo(Long idPersona);
     List<CuentaCobroDTO> listarCuentasPendientesAnalisis(Long idPersona);
+
+    CuentaCobro encontrarPorId(Long idCuentaCobro);
     CuentaCobro crearCuentaCobro(CuentaCobro cuentaCobro);
 }

@@ -1,11 +1,9 @@
 package co.edu.inmobiliaria.backendverkev.servicios.cuentaCobro;
 
-import co.edu.inmobiliaria.backendverkev.dominio.CuentaCobro;
-import co.edu.inmobiliaria.backendverkev.dominio.Persona;
-import co.edu.inmobiliaria.backendverkev.dominio.PersonaCompra;
-import co.edu.inmobiliaria.backendverkev.dominio.PersonaVenta;
+import co.edu.inmobiliaria.backendverkev.dominio.*;
 import co.edu.inmobiliaria.backendverkev.dtos.CuentaCobroDTO;
 import co.edu.inmobiliaria.backendverkev.repositorios.CuentaCobroRepository;
+import co.edu.inmobiliaria.backendverkev.servicios.inmueble.InmuebleServiceImp;
 import co.edu.inmobiliaria.backendverkev.servicios.persona.PersonaServiceImp;
 import co.edu.inmobiliaria.backendverkev.servicios.personaArriendo.PersonaArriendoServiceImp;
 import co.edu.inmobiliaria.backendverkev.servicios.personaCompra.PersonaCompraServiceImp;
@@ -25,6 +23,8 @@ public class CuentaCobroServiceImp implements CuentaCobroService{
     private PersonaCompraServiceImp personaCompraServiceImp;
     @Autowired
     private PersonaArriendoServiceImp personaArriendoServiceImp;
+    @Autowired
+    private InmuebleServiceImp inmuebleServiceImp;
 
     @Autowired
     private PersonaServiceImp personaServiceImp;
@@ -51,7 +51,7 @@ public class CuentaCobroServiceImp implements CuentaCobroService{
             }
 
         } else {
-            throw new EntityNotFoundException("No se encontró la persona con id:  " + idPersona);
+            return null;
         }
     }
 
@@ -78,13 +78,37 @@ public class CuentaCobroServiceImp implements CuentaCobroService{
             }
 
         } else {
-            throw new EntityNotFoundException("No se encontró la persona con id:  " + idPersona);
+            return null;
         }
     }
 
     @Override
     public List<CuentaCobroDTO> listarCuentasPendientesAnalisis(Long idPersona) {
-        return null;
+        Inmueble inmueble = inmuebleServiceImp.encontrarInmueblePropietario(idPersona);
+
+        if (inmueble.getAnalisisRiesgoList().size() > 0 && inmueble.getAnalisisRiesgoList() != null) {
+            List<CuentaCobro> cuentaCobros = inmueble.getAnalisisRiesgoList().stream()
+                    .filter(ar -> ar.getCuentaCobro().getPagoList().size() == 0)
+                    .map(ar -> ar.getCuentaCobro())
+                    .collect(Collectors.toList());
+
+            return cuentaCobros.stream()
+                    .map(c -> new CuentaCobroDTO(c))
+                    .collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public CuentaCobro encontrarPorId(Long idCuentaCobro) {
+        Optional<CuentaCobro> cuentaCobro = cuentaCobroRepository.findById(idCuentaCobro);
+
+        if (cuentaCobro.isPresent()) {
+            return  cuentaCobro.get();
+        } else {
+            throw new EntityNotFoundException("No se encontró la cuenta con id:  " + idCuentaCobro);
+        }
     }
 
     @Override
