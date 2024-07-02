@@ -16,6 +16,8 @@ public class ArriendoDTO {
     private String direccion;
     private String propietario;
     private String comercial_encargado;
+    private int id_cuenta_cobro;
+    private String cuenta_cobro;
 
     public ArriendoDTO(Arriendo arriendo) {
         this.id = arriendo.getId();
@@ -37,6 +39,8 @@ public class ArriendoDTO {
                 this.comercial_encargado = comercial.get();
             }
         }
+        this.id_cuenta_cobro = arriendo.getCuentaCobro().getId();
+        this.cuenta_cobro = arriendo.getCuentaCobro().getCuenta();
     }
 
     public String[] convertirFechaStringSinHora(Date fecha) {
@@ -116,5 +120,21 @@ public class ArriendoDTO {
 
     public void setComercial_encargado(String comercial_encargado) {
         this.comercial_encargado = comercial_encargado;
+    }
+
+    public int getId_cuenta_cobro() {
+        return id_cuenta_cobro;
+    }
+
+    public void setId_cuenta_cobro(int id_cuenta_cobro) {
+        this.id_cuenta_cobro = id_cuenta_cobro;
+    }
+
+    public String getCuenta_cobro() {
+        return cuenta_cobro;
+    }
+
+    public void setCuenta_cobro(String cuenta_cobro) {
+        this.cuenta_cobro = cuenta_cobro;
     }
 }

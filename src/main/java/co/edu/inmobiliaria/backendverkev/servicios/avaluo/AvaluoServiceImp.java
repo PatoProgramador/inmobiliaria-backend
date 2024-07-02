@@ -2,6 +2,7 @@ package co.edu.inmobiliaria.backendverkev.servicios.avaluo;
 
 import co.edu.inmobiliaria.backendverkev.dominio.Avaluo;
 import co.edu.inmobiliaria.backendverkev.dominio.Inmueble;
+import co.edu.inmobiliaria.backendverkev.dtos.AvaluoDTO;
 import co.edu.inmobiliaria.backendverkev.dtos.InmuebleDTO;
 import co.edu.inmobiliaria.backendverkev.inputdtos.AvaluoInputDTO;
 import co.edu.inmobiliaria.backendverkev.inputdtos.InmubleInputDTO;
@@ -22,7 +23,7 @@ public class AvaluoServiceImp implements AvaluoService {
     private InmuebleServiceImp inmuebleServiceImp;
 
     @Override
-    public Avaluo crearAvaluo(Long idInmueble, AvaluoInputDTO avaluoInputDTO) {
+    public AvaluoDTO crearAvaluo(Long idInmueble, AvaluoInputDTO avaluoInputDTO) {
         Avaluo avaluo = new Avaluo();
         // relacion con inmueble...
         Inmueble inmueble = inmuebleServiceImp.encontrarPorIdInmueble(idInmueble);
@@ -30,13 +31,13 @@ public class AvaluoServiceImp implements AvaluoService {
         if (inmueble.getAnalisisRiesgoList().size() > 0 && inmueble.getAnalisisRiesgoList() != null) {
             InmubleInputDTO inmubleInputDTO = new InmubleInputDTO();
             inmubleInputDTO.setDisponible(Boolean.TRUE);
-            InmuebleDTO inmuebleDTO = inmuebleServiceImp.modificarInmueble(0L, 0L, inmubleInputDTO);
+            InmuebleDTO inmuebleDTO = inmuebleServiceImp.modificarInmueble(idInmueble, 0L, inmubleInputDTO);
         }
         // otros atributos..
         avaluo.setDescripcion(avaluoInputDTO.getDescripcion());
         avaluo.setPrecio(avaluoInputDTO.getPrecio());
         avaluo.setFecha(new Date());
         avaluoRepository.save(avaluo);
-        return avaluo;
+        return new AvaluoDTO(avaluo);
     }
 }

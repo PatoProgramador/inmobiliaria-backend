@@ -1,6 +1,7 @@
 package co.edu.inmobiliaria.backendverkev.controladores;
 
 import co.edu.inmobiliaria.backendverkev.dominio.Avaluo;
+import co.edu.inmobiliaria.backendverkev.dtos.AvaluoDTO;
 import co.edu.inmobiliaria.backendverkev.inputdtos.AvaluoInputDTO;
 import co.edu.inmobiliaria.backendverkev.servicios.avaluo.AvaluoServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ public class AvaluoControlador {
     private AvaluoServiceImp avaluoServiceImp;
 
     @PostMapping("/crearAvaluo/inmueble/{idInmueble}")
-    public Avaluo crearAvaluo(@PathVariable Long idInmueble, @RequestBody AvaluoInputDTO avaluoInputDTO) {
+    public AvaluoDTO crearAvaluo(@PathVariable Long idInmueble, @RequestBody AvaluoInputDTO avaluoInputDTO) {
         return avaluoServiceImp.crearAvaluo(idInmueble, avaluoInputDTO);
     }
 }
