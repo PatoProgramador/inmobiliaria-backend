@@ -8,6 +8,8 @@ import co.edu.inmobiliaria.backendverkev.servicios.persona.PersonaServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PersonaCompraServiceImp implements PersonaCompraService{
     @Autowired
@@ -15,6 +17,11 @@ public class PersonaCompraServiceImp implements PersonaCompraService{
 
     @Autowired
     private PersonaServiceImp personaServiceImp;
+
+    @Override
+    public List<PersonaCompra> traerPorIdPersona(Long idPersona) {
+        return personaCompraRepository.encontrarPersonaCompraPorPersona(idPersona);
+    }
 
     @Override
     public PersonaCompra crearPersonaCompra(Long idPersona, Compra compra) {

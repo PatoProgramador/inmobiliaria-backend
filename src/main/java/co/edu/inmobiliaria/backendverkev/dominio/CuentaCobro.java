@@ -16,7 +16,7 @@ public class CuentaCobro {
     private Double monto;
 
     @OneToMany(mappedBy = "cuentaCobro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Arriendo> personaArriendoList;
+    private List<Arriendo> arriendoList;
 
     @OneToMany(mappedBy = "cuentaCobro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Pago> pagoList;
@@ -53,12 +53,12 @@ public class CuentaCobro {
         this.monto = monto;
     }
 
-    public List<Arriendo> getPersonaArriendoList() {
-        return personaArriendoList;
+    public List<Arriendo> getArriendoList() {
+        return arriendoList;
     }
 
-    public void setPersonaArriendoList(List<Arriendo> personaArriendoList) {
-        this.personaArriendoList = personaArriendoList;
+    public void setArriendoList(List<Arriendo> arriendoList) {
+        this.arriendoList = arriendoList;
     }
 
     public List<Pago> getPagoList() {
