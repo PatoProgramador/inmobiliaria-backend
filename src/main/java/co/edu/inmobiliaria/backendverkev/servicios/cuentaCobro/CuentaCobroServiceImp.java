@@ -7,6 +7,7 @@ import co.edu.inmobiliaria.backendverkev.dominio.PersonaVenta;
 import co.edu.inmobiliaria.backendverkev.dtos.CuentaCobroDTO;
 import co.edu.inmobiliaria.backendverkev.repositorios.CuentaCobroRepository;
 import co.edu.inmobiliaria.backendverkev.servicios.persona.PersonaServiceImp;
+import co.edu.inmobiliaria.backendverkev.servicios.personaArriendo.PersonaArriendoServiceImp;
 import co.edu.inmobiliaria.backendverkev.servicios.personaCompra.PersonaCompraServiceImp;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class CuentaCobroServiceImp implements CuentaCobroService{
     private CuentaCobroRepository cuentaCobroRepository;
     @Autowired
     private PersonaCompraServiceImp personaCompraServiceImp;
+    @Autowired
+    private PersonaArriendoServiceImp personaArriendoServiceImp;
 
     @Autowired
     private PersonaServiceImp personaServiceImp;
@@ -34,8 +37,6 @@ public class CuentaCobroServiceImp implements CuentaCobroService{
                 .map(pc -> pc.getCompra().getInmueble().getPersona().getId())
                 .findFirst();
         if (idPropietario.isPresent()) {
-            System.out.println(persona.getTipoPersona().getDescripcion());
-            System.out.println(idPropietario.get());
             if (!persona.getTipoPersona().getDescripcion().equalsIgnoreCase("Comercial") && persona.getId() != idPropietario.get()) {
                 List<CuentaCobro> personaCuentaCobro = personaCompraServiceImp.traerPorIdPersona(idPersona).stream()
                         .filter(pc -> pc.getCompra().getCuentaCobro().getPagoList().size() == 0)
@@ -56,7 +57,29 @@ public class CuentaCobroServiceImp implements CuentaCobroService{
 
     @Override
     public List<CuentaCobroDTO> listarCuentasPendientesArriendo(Long idPersona) {
-        return null;
+        Persona persona = personaServiceImp.traerPorIdPersona(idPersona);
+        Optional<Integer> idPropietario = personaArriendoServiceImp.traerPorPersona(idPersona).stream()
+                .filter(pa -> pa.getArriendo().getCuentaCobro().getPagoList().size() == 0)
+                .map(pa -> pa.getArriendo().getInmueble().getPersona().getId())
+                .findFirst();
+
+        if (idPropietario.isPresent()) {
+            if (!persona.getTipoPersona().getDescripcion().equalsIgnoreCase("Comercial") && persona.getId() != idPropietario.get()) {
+                List<CuentaCobro> personaCuentaCobro = personaArriendoServiceImp.traerPorPersona(idPersona).stream()
+                        .filter(pc -> pc.getArriendo().getCuentaCobro().getPagoList().size() == 0)
+                        .map(pc -> pc.getArriendo().getCuentaCobro())
+                        .collect(Collectors.toList());
+
+                return personaCuentaCobro.stream()
+                        .map(c -> new CuentaCobroDTO(c))
+                        .collect(Collectors.toList());
+            } else {
+                return null;
+            }
+
+        } else {
+            throw new EntityNotFoundException("No se encontró la persona con id:  " + idPersona);
+        }
     }
 
     @Override

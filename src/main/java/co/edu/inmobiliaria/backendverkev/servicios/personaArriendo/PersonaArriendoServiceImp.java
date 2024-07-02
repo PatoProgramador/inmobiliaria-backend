@@ -9,6 +9,7 @@ import co.edu.inmobiliaria.backendverkev.servicios.persona.PersonaServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,6 +19,11 @@ public class PersonaArriendoServiceImp implements PersonaArriendoService {
 
     @Autowired
     private PersonaServiceImp personaServiceImp;
+
+    @Override
+    public List<PersonaArriendo> traerPorPersona(Long idPersona) {
+        return personaArriendoRepository.encontrarPorPersona(idPersona);
+    }
 
     @Override
     public PersonaArriendo encontrarPorIdArriendoIdPersona(Long idArriendo, Long idPersona) {

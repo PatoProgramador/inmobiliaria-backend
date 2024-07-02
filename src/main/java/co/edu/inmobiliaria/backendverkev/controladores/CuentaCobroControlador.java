@@ -21,4 +21,9 @@ public class CuentaCobroControlador {
     public List<CuentaCobroDTO> listarComprasPendientesPersona(@PathVariable Long idPersona) {
         return  cuentaCobroServiceImp.listarCuentasPendientesCompras(idPersona);
     }
+
+    @GetMapping("/listar/arriendosPendientes/{idPersona}")
+    public List<CuentaCobroDTO> listarArriendosPendientesPersona(@PathVariable Long idPersona) {
+        return  cuentaCobroServiceImp.listarCuentasPendientesArriendo(idPersona);
+    }
 }
