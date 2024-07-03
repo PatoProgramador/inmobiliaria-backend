@@ -16,7 +16,7 @@ public interface InmuebleService {
 
     InmuebleDTO encontrarPorIdInmuebleDTO(Long id);
     Inmueble encontrarPorIdInmueble(Long id);
-    Inmueble encontrarInmueblePropietario(Long id);
+    List<Inmueble> encontrarInmueblePropietario(Long id);
 
 
     InmuebleDTO crearInmueble(Long idPersona, InmubleInputDTO inmubleInputDTO);

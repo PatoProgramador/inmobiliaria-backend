@@ -11,5 +11,6 @@ public interface CuentaCobroService {
     List<CuentaCobroDTO> listarCuentasPendientesAnalisis(Long idPersona);
 
     CuentaCobro encontrarPorId(Long idCuentaCobro);
+    CuentaCobroDTO encontrarPorIdDTO(Long idCuentaCobro);
     CuentaCobro crearCuentaCobro(CuentaCobro cuentaCobro);
 }

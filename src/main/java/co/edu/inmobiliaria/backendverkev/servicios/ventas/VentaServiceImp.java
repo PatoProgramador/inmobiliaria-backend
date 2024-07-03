@@ -32,19 +32,12 @@ public class VentaServiceImp implements VentaService{
     private ComisionServiceImp comisionServiceImp;
 
     @Override
-    public VentaDTO crearVenta(Long idPropietario, Long idComercial, Long idComprador, Long idInmueble, VentaInputDTO ventaInputDTO) {
+    public VentaDTO crearVenta(Long idPropietario, Long idComercial, Long idComprador, Long idInmueble) {
         Venta venta = new Venta();
         // inmueble asociado
         Inmueble inmueble = inmuebleServiceImp.encontrarPorIdInmueble(idInmueble);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy");
         venta.setInmueble(inmueble);
-        // propiedades
-        try {
-            Date fecha = simpleDateFormat.parse(ventaInputDTO.getFecha());
-            venta.setFecha(fecha);
-        } catch (ParseException e) {
-            System.out.println("Error al convertir la fecha: " + e.getMessage());
-        }
+        venta.setFecha(new Date());
         // instancia..
         venta = ventaRepository.save(venta);
         // relacion uno a muchos

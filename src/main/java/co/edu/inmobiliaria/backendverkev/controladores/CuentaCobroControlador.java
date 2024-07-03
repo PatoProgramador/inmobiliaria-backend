@@ -1,5 +1,6 @@
 package co.edu.inmobiliaria.backendverkev.controladores;
 
+import co.edu.inmobiliaria.backendverkev.dominio.CuentaCobro;
 import co.edu.inmobiliaria.backendverkev.dtos.CuentaCobroDTO;
 import co.edu.inmobiliaria.backendverkev.servicios.cuentaCobro.CuentaCobroServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,10 @@ public class CuentaCobroControlador {
     @GetMapping("/listar/analisisPedientes/{idPersona}")
     public  List<CuentaCobroDTO> listarAnalisisPendientesPersona(@PathVariable Long idPersona) {
         return cuentaCobroServiceImp.listarCuentasPendientesAnalisis(idPersona);
+    }
+
+    @GetMapping("/{idCuentaCobro}")
+    public CuentaCobroDTO encontrarPorId(@PathVariable Long idCuentaCobro) {
+        return cuentaCobroServiceImp.encontrarPorIdDTO(idCuentaCobro);
     }
 }

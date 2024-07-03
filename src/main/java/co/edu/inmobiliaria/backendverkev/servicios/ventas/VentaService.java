@@ -6,5 +6,5 @@ import co.edu.inmobiliaria.backendverkev.inputdtos.CompraInputDTO;
 import co.edu.inmobiliaria.backendverkev.inputdtos.VentaInputDTO;
 
 public interface VentaService {
-    VentaDTO crearVenta(Long idPropietario, Long idComercial, Long idComprador, Long idInmueble, VentaInputDTO ventaInputDTO);
+    VentaDTO crearVenta(Long idPropietario, Long idComercial, Long idComprador, Long idInmueble);
 }

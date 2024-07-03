@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -47,7 +48,7 @@ public class AnalisisRiesgoServiceImp implements analisisRiesgoService{
         // precio..
         int lastItemIndex = inmuebleDb.getAvaluoList().size() - 1;
         Double precio = inmuebleDb.getAvaluoList().get(lastItemIndex).getPrecio();
-        Double porcentaje = 0.5;
+        Double porcentaje = 0.05;
 
         Double precioFinal = precio * porcentaje;
         cuentaCobro.setMonto(precioFinal);
@@ -57,6 +58,18 @@ public class AnalisisRiesgoServiceImp implements analisisRiesgoService{
         analisisRiesgo = analisisdeRiesgoRepository.save(analisisRiesgo);
 
         return new AnalisisRiesgoDTO(analisisRiesgo);
+    }
+
+    @Override
+    public AnalisisRiesgo modificarAnalisisRiesgo(Long idAnalisisRiesgo, Boolean estado) {
+        Optional<AnalisisRiesgo> analisisRiesgo = analisisdeRiesgoRepository.findById(idAnalisisRiesgo);
+
+        if (analisisRiesgo.isPresent()) {
+            AnalisisRiesgo analisisRiesgoDB = analisisRiesgo.get();
+            analisisRiesgoDB.setAprobado(estado);
+            return analisisdeRiesgoRepository.save(analisisRiesgoDB);
+        }
+        return null;
     }
 
     private String generarUUID() throws NoSuchAlgorithmException {

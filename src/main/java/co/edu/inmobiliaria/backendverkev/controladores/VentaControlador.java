@@ -14,7 +14,7 @@ public class VentaControlador {
     private VentaServiceImp ventaServiceImp;
 
     @PostMapping("/crear/propietario/{idPropietario}/comercial/{idComercial}/comprador/{idComprador}/inmueble/{idInmueble}")
-    public VentaDTO CrearVenta(@PathVariable Long idPropietario, @PathVariable Long idComercial, @PathVariable Long idComprador, @PathVariable Long idInmueble, @RequestBody VentaInputDTO ventaInputDTO) {
-        return ventaServiceImp.crearVenta(idPropietario,idComercial,idComprador,idInmueble,ventaInputDTO);
+    public VentaDTO CrearVenta(@PathVariable Long idPropietario, @PathVariable Long idComercial, @PathVariable Long idComprador, @PathVariable Long idInmueble) {
+        return ventaServiceImp.crearVenta(idPropietario,idComercial,idComprador,idInmueble);
     }
 }

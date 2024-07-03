@@ -7,4 +7,6 @@ import co.edu.inmobiliaria.backendverkev.inputdtos.AnalisisRiesgoInputDTO;
 public interface analisisRiesgoService {
 
     AnalisisRiesgoDTO crearAnalisisRiesgo(Long idInmueble, AnalisisRiesgoInputDTO analisisRiesgoInputDTO);
+
+    AnalisisRiesgo modificarAnalisisRiesgo(Long idAnalisisRiesgo, Boolean estado);
 }

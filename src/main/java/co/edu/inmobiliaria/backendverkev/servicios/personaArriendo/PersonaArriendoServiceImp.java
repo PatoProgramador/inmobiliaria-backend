@@ -21,6 +21,11 @@ public class PersonaArriendoServiceImp implements PersonaArriendoService {
     private PersonaServiceImp personaServiceImp;
 
     @Override
+    public List<PersonaArriendo> listar() {
+        return personaArriendoRepository.findAll();
+    }
+
+    @Override
     public List<PersonaArriendo> traerPorPersona(Long idPersona) {
         return personaArriendoRepository.encontrarPorPersona(idPersona);
     }

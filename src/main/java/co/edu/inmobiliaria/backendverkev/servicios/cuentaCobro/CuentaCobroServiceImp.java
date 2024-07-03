@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class CuentaCobroServiceImp implements CuentaCobroService{
+public class CuentaCobroServiceImp implements CuentaCobroService {
     @Autowired
     private CuentaCobroRepository cuentaCobroRepository;
     @Autowired
@@ -32,24 +32,18 @@ public class CuentaCobroServiceImp implements CuentaCobroService{
     @Override
     public List<CuentaCobroDTO> listarCuentasPendientesCompras(Long idPersona) {
         Persona persona = personaServiceImp.traerPorIdPersona(idPersona);
-        Optional<Integer> idPropietario = personaCompraServiceImp.traerPorIdPersona(idPersona).stream()
-                .filter(pc -> pc.getCompra().getCuentaCobro().getPagoList().size() == 0)
-                .map(pc -> pc.getCompra().getInmueble().getPersona().getId())
-                .findFirst();
-        if (idPropietario.isPresent()) {
-            if (!persona.getTipoPersona().getDescripcion().equalsIgnoreCase("Comercial") && persona.getId() != idPropietario.get()) {
-                List<CuentaCobro> personaCuentaCobro = personaCompraServiceImp.traerPorIdPersona(idPersona).stream()
-                        .filter(pc -> pc.getCompra().getCuentaCobro().getPagoList().size() == 0)
-                        .map(pc -> pc.getCompra().getCuentaCobro())
-                        .collect(Collectors.toList());
 
-                return personaCuentaCobro.stream()
-                        .map(c -> new CuentaCobroDTO(c))
-                        .collect(Collectors.toList());
-            } else {
-                return null;
-            }
+        if (!persona.getTipoPersona().getDescripcion().equalsIgnoreCase("Comercial")) {
+            List<CuentaCobro> personaCuentaCobro = personaCompraServiceImp.traerPorIdPersona(idPersona).stream()
+                    // evitamos que sea el propietario
+                    .filter(pc -> pc.getCompra().getInmueble().getPersona().getId() != idPersona)
+                    .filter(pc -> pc.getCompra().getCuentaCobro().getPagoList().size() == 0)
+                    .map(pc -> pc.getCompra().getCuentaCobro())
+                    .collect(Collectors.toList());
 
+            return personaCuentaCobro.stream()
+                    .map(c -> new CuentaCobroDTO(c))
+                    .collect(Collectors.toList());
         } else {
             return null;
         }
@@ -58,37 +52,33 @@ public class CuentaCobroServiceImp implements CuentaCobroService{
     @Override
     public List<CuentaCobroDTO> listarCuentasPendientesArriendo(Long idPersona) {
         Persona persona = personaServiceImp.traerPorIdPersona(idPersona);
-        Optional<Integer> idPropietario = personaArriendoServiceImp.traerPorPersona(idPersona).stream()
-                .filter(pa -> pa.getArriendo().getCuentaCobro().getPagoList().size() == 0)
-                .map(pa -> pa.getArriendo().getInmueble().getPersona().getId())
-                .findFirst();
 
-        if (idPropietario.isPresent()) {
-            if (!persona.getTipoPersona().getDescripcion().equalsIgnoreCase("Comercial") && persona.getId() != idPropietario.get()) {
-                List<CuentaCobro> personaCuentaCobro = personaArriendoServiceImp.traerPorPersona(idPersona).stream()
-                        .filter(pc -> pc.getArriendo().getCuentaCobro().getPagoList().size() == 0)
-                        .map(pc -> pc.getArriendo().getCuentaCobro())
-                        .collect(Collectors.toList());
+        if (!persona.getTipoPersona().getDescripcion().equalsIgnoreCase("Comercial")) {
+            List<CuentaCobro> personaCuentaCobro = personaArriendoServiceImp.traerPorPersona(idPersona).stream()
+                    .filter(pc -> pc.getArriendo().getInmueble().getPersona().getId() != idPersona)
+                    .filter(pc -> pc.getArriendo().getCuentaCobro().getPagoList().size() == 0)
+                    .map(pc -> pc.getArriendo().getCuentaCobro())
+                    .collect(Collectors.toList());
 
-                return personaCuentaCobro.stream()
-                        .map(c -> new CuentaCobroDTO(c))
-                        .collect(Collectors.toList());
-            } else {
-                return null;
-            }
-
+            return personaCuentaCobro.stream()
+                    .map(c -> new CuentaCobroDTO(c))
+                    .collect(Collectors.toList());
         } else {
             return null;
         }
+
     }
 
     @Override
     public List<CuentaCobroDTO> listarCuentasPendientesAnalisis(Long idPersona) {
-        Inmueble inmueble = inmuebleServiceImp.encontrarInmueblePropietario(idPersona);
+        List<Inmueble> inmuebles = inmuebleServiceImp.encontrarInmueblePropietario(idPersona).stream()
+                .filter(i -> i.getAnalisisRiesgoList().size() > 0)
+                .collect(Collectors.toList());
 
-        if (inmueble.getAnalisisRiesgoList().size() > 0 && inmueble.getAnalisisRiesgoList() != null) {
-            List<CuentaCobro> cuentaCobros = inmueble.getAnalisisRiesgoList().stream()
-                    .filter(ar -> ar.getCuentaCobro().getPagoList().size() == 0)
+        if (inmuebles.size() > 0) {
+            List<CuentaCobro> cuentaCobros = inmuebles.stream()
+                    .flatMap(in -> in.getAnalisisRiesgoList().stream())
+                    .filter(ar -> ar.getCuentaCobro().getPagoList().isEmpty())
                     .map(ar -> ar.getCuentaCobro())
                     .collect(Collectors.toList());
 
@@ -105,7 +95,18 @@ public class CuentaCobroServiceImp implements CuentaCobroService{
         Optional<CuentaCobro> cuentaCobro = cuentaCobroRepository.findById(idCuentaCobro);
 
         if (cuentaCobro.isPresent()) {
-            return  cuentaCobro.get();
+            return cuentaCobro.get();
+        } else {
+            throw new EntityNotFoundException("No se encontró la cuenta con id:  " + idCuentaCobro);
+        }
+    }
+
+    @Override
+    public CuentaCobroDTO encontrarPorIdDTO(Long idCuentaCobro) {
+        Optional<CuentaCobro> cuentaCobro = cuentaCobroRepository.findById(idCuentaCobro);
+
+        if (cuentaCobro.isPresent()) {
+            return new CuentaCobroDTO(cuentaCobro.get());
         } else {
             throw new EntityNotFoundException("No se encontró la cuenta con id:  " + idCuentaCobro);
         }
